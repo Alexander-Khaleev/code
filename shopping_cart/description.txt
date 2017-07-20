@@ -1,0 +1,1 @@
+This is a shopping-cart for online store. I used Angular Js to interactive calculating the cost of goods. This version of shopping-cart works with API.
