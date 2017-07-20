@@ -1,0 +1,2 @@
+This is a video player for pre-roll adversting. It connect with "Adfox" adversting system. This player can get xml file from adfox and parse it, and it successfully passed the verification
+ from the imho specialists. One of the biggest russian tv-channels use this player on the website. 
