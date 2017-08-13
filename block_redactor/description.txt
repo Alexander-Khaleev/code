@@ -1,0 +1,3 @@
+This is the block redactor for CMS. It can change block's view and send results to api. There are 3 different functions: change color, change size and change border. User can activate 
+one, two or all of these functions. If you want to activate plugin, you must add to your block .blockRedactor() or with instructions (for example .blockRedactor('palitra', 'border', 'resize')).
+You nedd only JQUERY and JQUERY UI.
