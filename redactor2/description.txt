@@ -1,0 +1,4 @@
+This is the modular editor for web-administrator's panel without Redux. This project will be used in writing news for one russian TV channel.  Its advantages are fastness,modernity and convenience.
+I used these technologies: React JS, JQUERY, JQUERY UI (draggable, sortable), font-awesome, JQUERY te-editor, PHP.
+
+Watch demo: http://friendlypeople.ru/redactor2/
