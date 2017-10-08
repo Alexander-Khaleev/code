@@ -1,0 +1,14 @@
+#block {
+  margin-top: 20px;
+  margin-left:20px;
+  cursor: pointer;
+}
+
+.item {
+  margin-bottom:5px;
+  color: black;
+}
+
+.fa-angle-right, .fa-angle-down, .fa-file-code-o {
+  padding-right:5px!important;
+}
