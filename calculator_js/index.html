@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title> Uralsib test task</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrapper"> 
+    <div class="new-calculator">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">  <div class="new-calculator__title">ПРОВЕРЬТЕ СВОЕ ПЕРСОНАЛЬНОЕ ПРЕДЛОЖЕНИЕ ОТ БАНКА</div> </div>
+        <div class="row">
+                <div class="col-4 col-sm-4 col-md-4 col-lg-4"> 
+                    <div class="new-calculator__left-white">
+                    <div class="new-calculator__field_title-left">Фамилия</div>
+                    <div class="new-calculator__field_title-left">Имя</div>
+                    <div class="new-calculator__field_title-left">Отчество</div>
+                    <div class="new-calculator__field_title-left">Дата рождения</div>
+                    </div>
+                </div>   
+                <div class="col-8 col-sm-8 col-md-8 col-lg-8">    
+                    <div class="new-calculator__right-white">
+                    <div class="new-calculator__field_input"><input type="text" class="form-control person surname" /></div>
+                    <div class="new-calculator__field_input"><input type="text" class="form-control person name"  /></div>
+                    <div class="new-calculator__field_input"><input type="text" class="form-control person patronym"  /></div>
+                    <div class="new-calculator__field_input"><input type="text" class="form-control person birthdate" /></div>
+                    </div>
+                 </div> 
+        </div>  
+        <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-4">        
+                    <div class="new-calculator__left-grey">
+                    <div class="new-calculator__field_title-left">Сумма кредита </div>
+                    <div class="new-calculator__field_title-left">Срок кредита </div>
+                    <div class="new-calculator__field_title-left-percent"> Процентная ставка</div>
+                    <div class="new-calculator__field_title-left-insurance"> Страхование </div>
+                    </div>
+                </div> 
+                <div class="col-lg-8 col-md-8 col-sm-8 col-8">
+                    <div class="new-calculator__right-grey">
+                    <div class="new-calculator__field_credit"><input type="number"  class="form-control" /> <div class="currence">РУБ.</div> <input class="range" type="range" /></div>
+                    <div class="new-calculator__field_month"><input type="number" class="form-control" /> <div class="months">мес.</div> <input class="range" type="range" /></div>
+                    <div class="new-calculator__field_percent-right">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12"><div class="percent__rate"> <input type="text" disabled class="form-control person"> </div> </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12"><div class="percent__title"> Ежемесячный платеж </div> </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-12"><div class="percent__payment"> <input type="number" disabled class="form-control"> </div> </div>
+                        </div>
+                    </div>
+                    <div class="new-calculator__field_insurance">
+                        <div class="row">
+                                <div class="col-lg-1 col-md-1 col-sm-2 col-3">
+                                <div class="radio-circle-yes"> <div class="radio-circle-active"></div> </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-2">
+                                <span class="radio-span"> Да </span>
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-3 col-3">
+                                <div class="radio-circle-no"><div class="radio-circle-active"></div> </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-2 col-2"> 
+                                <span class="radio-span"> Нет </span> 
+                                </div>
+                        </div>
+                        </div>    
+                    </div>   
+                   </div>
+        </div>           
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12"> <div class="new-calculator__warning">Все расчеты являются предварительными, для более точной информации вы можете обратитьтся в любое отделение банка</div> </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12"> <div class="new-calculator__submit"><button class="btn btn-success btn-lg">Рассчитать</button></div>  </div>
+</div>
+<!-- Модальное окно -->
+<div id="mask"></div>
+<div id="myModalBox" class="modal hide">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+            <p> Для Вас имеется персональное предложение:</p>
+            <p> Сумма кредита <strong>900 тыс. руб.</strong></p>
+            <p> Срок кредита <strong>36 месяцев </strong></p>
+            <p> Процентная ставка <strong>15% годовых</strong></p>
+            <hr />
+            <button type="button" id="accept" class="btn btn-primary">Принять предложение<br> и отправить заявку</button>
+            <button type="button" class="btn btn-danger" id="cancel">Отказаться<br> от предложения</button>
+      </div>
+    </div>
+</div>    
+</div>
+<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="calculator.js"> </script>    
+</body>
+</html>
