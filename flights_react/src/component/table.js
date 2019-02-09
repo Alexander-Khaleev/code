@@ -27,12 +27,9 @@ class Table extends Component {
                         // Если используется ^
                         if (metka == 1) {
                             if (newString.indexOf(val) === 0 && newString.indexOf(val) !== -1 && val.length !== 0)  {
-                                //console.log(item);
-                                console.log(newString.indexOf(val));
                                 container.push(item);
                             }
                             else if (newString.indexOf(val) !== 0 && val.length !== 0)) {
-                                console.log('Puk');
                                 ts.setState({data: ''});
                             }
                         }

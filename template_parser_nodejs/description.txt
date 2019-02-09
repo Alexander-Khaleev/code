@@ -1,1 +1,0 @@
-This is a Node Js/Javascript parser of html templates. This parser can get html template with css and javascript files, parse it and post to special API. It is part of the site builder project.

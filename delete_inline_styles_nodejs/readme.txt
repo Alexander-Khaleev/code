@@ -1,0 +1,1 @@
+This is delete inline-styles node js module. This module also can write new css files from inline-styles.
