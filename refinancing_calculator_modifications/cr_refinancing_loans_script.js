@@ -6,8 +6,7 @@ $(document).ready(function () {
     var getNewInsuranceVariant = function() {
         this.oldUnsuranceRatesPercent = ajaxForm.percent; // Выносим ставку в переменную для дальнейших расчётов
         this.newInsuranceRate; // Выносим значение страховой ставки по матрице КЗЗ в переменную для дальнейших расчётов
-        this.newInsuranceFlag = 1; // Флаг для страхования
-        this.insuranceFlagChecked = 1;
+        this.insurance = true; // Флаг для страхования
         this.dopField = 500000;
         this.maxSumma = 2000000; // Максимальная сумма кредита по рефинансированию
 
@@ -26,6 +25,9 @@ $(document).ready(function () {
         this.$payAdvantages = $("#pay_advantages"); // Вы будете платить на ... меньше
         this.$inputRange = $("#cr_refinancing_loans_summ_dop_value_output").parent().find(".input__range"); // Получаем блок со слайдером под инпутом "Хочу получить дополнительно"
         this.$inputRangeInput = $(this.$inputRange).find("input"); // Получаем сам инпут слайдера "Хочу получить дополнительно"
+        this.$insuranceCheckbox = $('#cr_refinancing_loans_life_insurance'); // Чекбокс страхования
+        this.$refinNewPay = $("#refin__new_pay-block"); // Блок "Новый платеж"
+        this.$refinSpan =  $(".refin_pay_option"); // Спан для обрезки текста
     }
 
     getNewInsuranceVariant.prototype.setDefaultYear = function () {
@@ -44,23 +46,20 @@ $(document).ready(function () {
     getNewInsuranceVariant.prototype.bindEvents = function () {
         var self = this;
         // Флажок "Включить страхование жизни"
-        $('#cr_refinancing_loans_life_insurance').on("change", function() {
-            if (self.insuranceFlagChecked === 1 && ajaxForm.percent === self.oldUnsuranceRatesPercent)  {
-                ajaxForm.percent += 3.1;
+        this.$insuranceCheckbox.on("change", function() {
+            self.insurance = $(this).prop("checked");
+            if (!self.insurance)  {
+                ajaxForm.percent += 6;
                 self.$insuranceBonus.html(0 + " ₽"); // Выставляем в правое поле страховую премию
                 self.$percentC.html(ajaxForm.percent.toString().replace('.', ','));
-                self.newInsuranceFlag = 0;
-                self.insuranceFlagChecked = 0;
-                var newCreditSumm = NumPrettify(Number(self.$refinancingSumm.val()) + Number(self.$refinancingSummDop.val()));            
+                var newCreditSumm = NumPrettify(Number(self.$refinancingSumm.val()) + Number(self.$refinancingSummDop.val()));       
                 self.$simmC.html(newCreditSumm);
-                self.PayAddClient(Number(self.$refinancingSumm.val()) + Number(self.$refinancingSummDop.val())); 
+                self.PayAddClient(Number(self.$refinancingSumm.val()) + Number(self.$refinancingSummDop.val()));
             }
             else { 
                 ajaxForm.percent = self.oldUnsuranceRatesPercent;
                 self.calculateInsuranseRate(ajaxForm.summ, ajaxForm.time *12); // Вызов функции для пересчёта при переключении флага "Включить страхование жизни"
                 self.$percentC.html(ajaxForm.percent.toString().replace('.', ','));
-                self.newInsuranceFlag = 1; 
-                self.insuranceFlagChecked = 1;
             }
         });
 
@@ -74,35 +73,46 @@ $(document).ready(function () {
                 self.$inputRangeInput.attr("max", valMaxDop);
                 $("#can-get-c").html(NumPrettify(valMaxDop));
                 sliderInit(self.$refinancingSummDop);
-                if (self.newInsuranceFlag === 1) {
+                if (self.insurance) {
                     self.calculateInsuranseRate(ajaxForm.summ, ajaxForm.time *12);
                 }
                 else {
                     self.PayAddClient(Number(self.$refinancingSumm.val()) + Number(self.$refinancingSummDop.val())); 
+                    self.calculateSummLessInsurance();
                 }
                 setTimeout(function() {self.calculateClientAdvantage()}, 1000); 
         });
         
         // Поле "Хочу получить дополнительно"
         this.$refinancingSummDop.on("change", function() {
+            if ($(this).val() == '0') {
+                self.$refinNewPay.hide();
+                self.$refinSpan.hide(); 
+            }
+            else {
+                self.$refinNewPay.show();
+                self.$refinSpan.show();  
+            }
             self.PayDop();
-            if (self.newInsuranceFlag === 1) {
+            if (self.insurance) {
                 self.calculateInsuranseRate(ajaxForm.summ, ajaxForm.time *12);
             }
             else {
                 self.PayAddClient(Number(self.$refinancingSumm.val()) + Number(self.$refinancingSummDop.val())); 
+                self.calculateSummLessInsurance();
             }
         });
             
         // Срок кредита
         // Ползунок
         this.$timeRange.on("change", function() {
-            if (self.newInsuranceFlag === 1) {
+            if (self.insurance) {
                 self.calculateInsuranseRate(ajaxForm.summ, ajaxForm.time*12);       
                 setTimeout(function() {self.calculateClientAdvantage()}, 1000);
             }
             else {
                 self.PayAddClient(Number(self.$refinancingSumm.val()) + Number(self.$refinancingSummDop.val())); 
+                self.calculateSummLessInsurance();
             }
         });
 
@@ -112,7 +122,7 @@ $(document).ready(function () {
                     ajaxForm.time += 1;
                     self.$timeC.html(ajaxForm.time  +' '+pluralize(ajaxForm.time, 'год', 'года', 'лет'));
                 }
-                if (self.newInsuranceFlag === 1) {
+                if (self.insurance) {
                     self.calculateInsuranseRate(ajaxForm.summ, ajaxForm.time*12);
                     setTimeout(function() {self.calculateClientAdvantage()}, 1000);
                 }
@@ -126,12 +136,13 @@ $(document).ready(function () {
                     ajaxForm.time -= 1;
                     self.$timeC.html(ajaxForm.time +' '+pluralize(ajaxForm.time , 'год', 'года', 'лет'));       
                 }    
-                if (self.newInsuranceFlag === 1) {
+                if (self.insurance) {
                     self.calculateInsuranseRate(ajaxForm.summ, ajaxForm.time *12);
                     setTimeout(function() {self.calculateClientAdvantage()}, 1000);
                 }
                 else {
                     self.PayAddClient(Number(self.$refinancingSumm.val()) + Number(self.$refinancingSummDop.val())); 
+                    self.calculateSummLessInsurance();
                 }
         });
     
@@ -249,7 +260,7 @@ $(document).ready(function () {
     }
 
     // Ежемесячный платеж (Плачу сейчас * коэффициент аннуитета)
-    getNewInsuranceVariant.prototype.PayDop = function() {  
+    getNewInsuranceVariant.prototype.PayDop = function() {
         var n1 = ajaxForm.time*12;
         var i = ajaxForm.percent/12/100;
         var newPayAddDop = Number(this.$refinancingSumm.val()) * ((i + (i/(Math.pow((1+i), n1)-1))).toFixed(5));
@@ -288,6 +299,12 @@ $(document).ready(function () {
             animateNumbers('pay_less', payAdvantage, '<i class="currency currency_rub"></i>', 0);
         }
     }
+
+    // Функция для расчета суммы платежа при отсутсвии страховки 
+    getNewInsuranceVariant.prototype.calculateSummLessInsurance = function() {
+        var newCreditSummLess = NumPrettify(Number(this.$refinancingSumm.val()) + Number(this.$refinancingSummDop.val()));
+        this.$simmC.html(newCreditSummLess);
+    } 
 
     // Функция для расстановки тултипов-подсказок
     getNewInsuranceVariant.prototype.getTooltips = function() {
